@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="theme-dark">
-    <!-- Header -->
     <header class="header">
         <div class="header-left">
             <h1 class="title">EP JSON</h1>
@@ -19,154 +18,29 @@
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="main">
-        <!-- Left Pane - Input -->
-        <div class="pane pane-left">
-            <div class="pane-header">
-                <h2>Input</h2>
-                <div class="toolbar">
-                    <button id="btn-beautify" class="btn btn-primary" title="Beautify JSON (Ctrl+B)" aria-label="Beautify JSON">
-                        <span class="spinner" style="display: none;"></span>
-                        Beautify
-                    </button>
-                    <button id="btn-minify" class="btn btn-secondary" title="Minify JSON (Ctrl+M)" aria-label="Minify JSON">
-                        <span class="spinner" style="display: none;"></span>
-                        Minify
-                    </button>
-                    <button id="btn-validate" class="btn btn-secondary" title="Validate JSON (Ctrl+Enter)" aria-label="Validate JSON">
-                        <span class="spinner" style="display: none;"></span>
-                        Validate
-                    </button>
-                    
-                    <div class="separator"></div>
-                    
-                    <label for="indent-select" class="label">Indent:</label>
-                    <select id="indent-select" class="select">
-                        <option value="2">2</option>
-                        <option value="4" selected>4</option>
-                        <option value="8">8</option>
-                    </select>
-                    
-                    <div class="separator"></div>
-                    
-                    <button id="btn-paste" class="btn btn-secondary" title="Paste from clipboard" aria-label="Paste from clipboard">Paste</button>
-                    <button id="btn-upload" class="btn btn-secondary" title="Upload JSON file" aria-label="Upload JSON file">Upload (A)</button>
-                    <button id="btn-clear" class="btn btn-secondary" title="Clear input" aria-label="Clear input">Clear</button>
-                    <input type="file" id="file-input" accept=".json,application/json,text/plain" style="display: none;">
-                </div>
-            </div>
-            
-            <div class="pane-content">
-                <textarea id="json-input" class="textarea" placeholder="Paste your JSON here..." spellcheck="false" aria-label="JSON input"></textarea>
-                
-                <div class="input-controls">
-                    <div class="control-row">
-                        <div class="control-group">
-                            <label for="search-input" class="control-label">Search Output</label>
-                            <div class="input-group">
-                                <input type="text" id="search-input" class="control-input" placeholder="Find in output..." aria-label="Search in output">
-                                <div class="button-group">
-                                    <button id="btn-search-prev" class="btn btn-icon btn-small" title="Previous match" aria-label="Previous match">↑</button>
-                                    <button id="btn-search-next" class="btn btn-icon btn-small" title="Next match" aria-label="Next match">↓</button>
-                                </div>
-                            </div>
-                            <div class="control-info">
-                                <span id="search-results" class="info-text"></span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="control-row">
-                        <div class="control-group">
-                            <label for="jsonpath-input" class="control-label">JSONPath Query</label>
-                            <div class="input-group">
-                                <input type="text" id="jsonpath-input" class="control-input" placeholder="$.foo.bar[0] or $.items[*].name" aria-label="JSONPath query">
-                                <button id="btn-jsonpath" class="btn btn-primary btn-action" title="Apply JSONPath" aria-label="Apply JSONPath">Apply</button>
-                            </div>
-                            <div class="control-info">
-                                <span class="info-text">Extract specific data using JSONPath expressions</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="validation-status" class="status" style="display: none;" role="status" aria-live="polite"></div>
-            </div>
-        </div>
+    <main class="hub-main">
+        <section class="hub-hero">
+            <h2>Privacy-first developer tools</h2>
+            <p>Pick a tool. Everything runs locally in your browser.</p>
+        </section>
 
-        <!-- Right Pane - Output -->
-        <div class="pane pane-right">
-            <div class="pane-header">
-                <div class="tabs" role="tablist">
-                    <button id="tab-tree" class="tab active" role="tab" aria-selected="true" aria-controls="panel-tree">Tree</button>
-                    <button id="tab-raw" class="tab" role="tab" aria-selected="false" aria-controls="panel-raw">Raw</button>
-                    <button id="tab-diff" class="tab" role="tab" aria-selected="false" aria-controls="panel-diff">Diff</button>
-                </div>
-                
-                <div class="toolbar">
-                    <button id="btn-copy" class="btn btn-secondary" title="Copy output" aria-label="Copy output">Copy</button>
-                    <button id="btn-download" class="btn btn-secondary" title="Download JSON" aria-label="Download JSON">Download</button>
-                </div>
-            </div>
-            
-            <div class="pane-content">
-                <!-- Tree View Panel -->
-                <div id="panel-tree" class="panel active" role="tabpanel" aria-labelledby="tab-tree">
-                    <div class="tree-controls">
-                        <button id="btn-expand-all" class="btn btn-small" title="Expand all nodes" aria-label="Expand all nodes">Expand All</button>
-                        <button id="btn-collapse-all" class="btn btn-small" title="Collapse all nodes" aria-label="Collapse all nodes">Collapse All</button>
-                    </div>
-                    <div id="tree-output" class="tree-view" role="tree" aria-label="JSON tree view"></div>
-                </div>
-                
-                <!-- Raw View Panel -->
-                <div id="panel-raw" class="panel" role="tabpanel" aria-labelledby="tab-raw">
-                    <pre id="raw-output" class="raw-view" aria-label="Formatted JSON output"></pre>
-                </div>
-                
-                <!-- Diff View Panel -->
-                <div id="panel-diff" class="panel" role="tabpanel" aria-labelledby="tab-diff">
-                    <div class="diff-controls">
-                        <div class="diff-input-group">
-                            <label for="diff-input" class="label">JSON B (compare against Input A):</label>
-                            <textarea id="diff-input" class="textarea diff-textarea" placeholder="Paste second JSON here..." spellcheck="false" aria-label="JSON B for comparison"></textarea>
-                            <div class="diff-buttons">
-                                <button id="btn-diff-paste" class="btn btn-secondary" title="Paste JSON B" aria-label="Paste JSON B">Paste B</button>
-                                <button id="btn-diff-upload" class="btn btn-secondary" title="Upload JSON B" aria-label="Upload JSON B">Upload B</button>
-                                <input type="file" id="diff-file-input" accept=".json,application/json,text/plain" style="display: none;">
-                            </div>
-                        </div>
-                        
-                        <div class="diff-view-controls">
-                            <button id="btn-diff-side" class="btn btn-view active" title="Side by side view" aria-label="Side by side view">Side by Side</button>
-                            <button id="btn-diff-inline" class="btn btn-view" title="Inline view" aria-label="Inline view">Inline</button>
-                            <button id="btn-diff-compare" class="btn btn-primary" title="Compare JSONs" aria-label="Compare JSONs">
-                                <span class="spinner" style="display: none;"></span>
-                                Compare
-                            </button>
-                        </div>
-                        
-                        <div class="diff-output-controls">
-                            <button id="btn-copy-diff" class="btn btn-secondary" title="Copy diff output" aria-label="Copy diff output">Copy Diff</button>
-                            <button id="btn-download-diff" class="btn btn-secondary" title="Download diff" aria-label="Download diff">Download Diff</button>
-                        </div>
-                    </div>
-                    
-                    <div id="diff-output" class="diff-view" aria-label="Diff comparison output"></div>
-                </div>
-            </div>
-        </div>
+        <section class="hub-grid" aria-label="Available tools">
+            <a class="hub-card" href="/json.html" aria-label="Open JSON Formatter">
+                <h3>JSON Formatter</h3>
+                <p>Beautify, minify, validate, query, and diff JSON data.</p>
+            </a>
+            <a class="hub-card" href="/jwt.html" aria-label="Open JWT Decoder">
+                <h3>JWT Decoder</h3>
+                <p>Decode bearer tokens locally and inspect header, payload, and signature.</p>
+            </a>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-    </footer>
+    <footer class="footer"></footer>
 
-    <!-- Toast Notifications -->
-    <div id="toast-container" class="toast-container" aria-live="polite"></div>
-
-    <!-- Scripts -->
-    <script src="app.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        window.EPTheme.init();
+    </script>
 </body>
 </html>

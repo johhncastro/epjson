@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Decoder - EP JSON</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+    <header class="header">
+        <div class="header-left">
+            <h1 class="title">EP JSON</h1>
+            <nav class="tool-nav" aria-label="Tools">
+                <a href="/index.html" class="tool-nav-link">Home</a>
+                <a href="/json.html" class="tool-nav-link">JSON Formatter</a>
+                <a href="/jwt.html" class="tool-nav-link active" aria-current="page">JWT Decoder</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <button id="theme-toggle" class="btn btn-icon" title="Toggle theme" aria-label="Toggle theme">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="jwt-main">
+        <section class="jwt-input-panel">
+            <div class="pane-header">
+                <h2>Bearer Token</h2>
+                <div class="toolbar">
+                    <button id="btn-decode-jwt" class="btn btn-primary" aria-label="Decode JWT">Decode</button>
+                    <button id="btn-clear-jwt" class="btn btn-secondary" aria-label="Clear JWT input">Clear</button>
+                </div>
+            </div>
+            <div class="pane-content">
+                <textarea
+                    id="jwt-input"
+                    class="textarea jwt-input"
+                    spellcheck="false"
+                    placeholder="Paste a JWT or Bearer token here..."
+                    aria-label="JWT input"
+                ></textarea>
+                <p id="jwt-status" class="status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section class="jwt-output-grid" aria-label="Decoded JWT sections">
+            <article class="jwt-output-card">
+                <h3>Header</h3>
+                <pre id="jwt-header-output" class="raw-view jwt-output">{}</pre>
+            </article>
+            <article class="jwt-output-card">
+                <h3>Payload</h3>
+                <pre id="jwt-payload-output" class="raw-view jwt-output">{}</pre>
+            </article>
+            <article class="jwt-output-card">
+                <h3>Signature</h3>
+                <pre id="jwt-signature-output" class="raw-view jwt-output"></pre>
+            </article>
+        </section>
+    </main>
+
+    <footer class="footer"></footer>
+
+    <script src="theme.js"></script>
+    <script src="jwt.js"></script>
+</body>
+</html>
