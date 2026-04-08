@@ -17,6 +17,42 @@
         return JSON.stringify(value, null, 2);
     }
 
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    function syntaxHighlightJson(value) {
+        const pretty = escapeHtml(formatJson(value));
+        return pretty.replace(
+            /("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(?=\s*:))|("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*")|\b(true|false)\b|\bnull\b|-?\d+(?:\.\d+)?(?:[eE][+\-]?\d+)?|[{}\[\]]/g,
+            function colorize(match, key) {
+                if (match === '{' || match === '}' || match === '[' || match === ']') {
+                    return '<span class="tree-bracket">' + match + '</span>';
+                }
+                if (key) {
+                    return '<span class="tree-key">' + key + '</span>';
+                }
+                if (match[0] === '"') {
+                    return '<span class="tree-value string">' + match + '</span>';
+                }
+                if (match === 'true' || match === 'false') {
+                    return '<span class="tree-value boolean">' + match + '</span>';
+                }
+                if (match === 'null') {
+                    return '<span class="tree-value null">' + match + '</span>';
+                }
+                return '<span class="tree-value number">' + match + '</span>';
+            }
+        );
+    }
+
+    function renderJsonOutput(elementId, value) {
+        document.getElementById(elementId).innerHTML = syntaxHighlightJson(value);
+    }
+
     function setStatus(message, isError) {
         const status = document.getElementById('jwt-status');
         status.textContent = message;
@@ -25,8 +61,8 @@
     }
 
     function clearOutput() {
-        document.getElementById('jwt-header-output').textContent = '{}';
-        document.getElementById('jwt-payload-output').textContent = '{}';
+        renderJsonOutput('jwt-header-output', {});
+        renderJsonOutput('jwt-payload-output', {});
         document.getElementById('jwt-signature-output').textContent = '';
         setStatus('', false);
     }
@@ -53,8 +89,8 @@
             const header = JSON.parse(headerText);
             const payload = JSON.parse(payloadText);
 
-            document.getElementById('jwt-header-output').textContent = formatJson(header);
-            document.getElementById('jwt-payload-output').textContent = formatJson(payload);
+            renderJsonOutput('jwt-header-output', header);
+            renderJsonOutput('jwt-payload-output', payload);
             document.getElementById('jwt-signature-output').textContent = parts[2] || '(empty signature)';
             setStatus('Decoded locally. No data left your browser.', false);
         } catch (error) {
